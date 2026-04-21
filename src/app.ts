@@ -9,5 +9,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api", reviewRoutes);
+app.get("/", (req, res) => {
+  res.send("AI Reviewer Backend is running!");
+});
 
 export default app;
