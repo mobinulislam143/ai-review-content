@@ -13,16 +13,31 @@ export const saveReview = async (data: any) => {
         fields: {
           Name: data.name,
           Platform: data.platform,
-          Status: ["Pending"],
+          Status: ["pending"],
           Score: Number(data.score),
           Feedback: data.improved,
+
+          // ✅ STORE IT IN AIRTABLE
+          RecordId: "temp" // placeholder first
         },
       },
     ],
     { typecast: true }
   );
 
-  return records[0].id; // 🔥 REQUIRED
+  const recordId = records[0].id;
+
+  // 🔥 update same record with its own ID
+  await base("tblYgE5qwQg4uZhLd").update([
+    {
+      id: recordId,
+      fields: {
+        RecordId: recordId,
+      },
+    },
+  ]);
+
+  return recordId;
 };
 
 export const updateAirtableStatus = async (

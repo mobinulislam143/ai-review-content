@@ -2,6 +2,7 @@
 import { env } from "../config/env";
 
 export const sendSlackMessage = async (data: any, recordId: string) => {
+  console.log("and Record ID:", recordId);
   await fetch(process.env.SLACK_WEBHOOK_URL as string, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -32,7 +33,7 @@ ${data.improved}
               text: { type: "plain_text", text: "Approve" },
               style: "primary",
               value: JSON.stringify({
-                action: "Approved",
+                action: "approved",
                 recordId,
               }),
             },
@@ -41,7 +42,7 @@ ${data.improved}
               text: { type: "plain_text", text: "Reject" },
               style: "danger",
               value: JSON.stringify({
-                action: "Rejected",
+                action: "rejected",
                 recordId,
               }),
             },
