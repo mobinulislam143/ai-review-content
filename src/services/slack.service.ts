@@ -13,9 +13,15 @@ export const sendSlackMessage = async (data: any, recordId: string) => {
             type: "mrkdwn",
             text: `🚀 *AI Review*
             
-👤 ${data.name}
-📱 ${data.platform}
-📊 Score: ${data.score}/100`,
+          👤 ${data.name}
+          📱 ${data.platform}
+          📊 Score: ${data.score}/100
+          Issues:
+${data.issues?.join("\n")}
+
+Improved:
+${data.improved}
+          `,
           },
         },
         {
