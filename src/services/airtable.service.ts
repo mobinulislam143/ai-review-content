@@ -1,4 +1,3 @@
-// src/services/airtable.service.ts
 import Airtable from "airtable";
 import { env } from "../config/env";
 
@@ -6,8 +5,10 @@ const base = new Airtable({ apiKey: env.AIRTABLE_API_KEY }).base(
   env.AIRTABLE_BASE_ID
 );
 
+const TABLE_NAME = "tblYgE5qwQg4uZhLd";
+
 export const saveReview = async (data: any) => {
-  const records = await base("tblYgE5qwQg4uZhLd").create(
+  const records = await base(TABLE_NAME).create(
     [
       {
         fields: {
@@ -16,9 +17,7 @@ export const saveReview = async (data: any) => {
           Status: ["pending"],
           Score: Number(data.score),
           Feedback: data.improved,
-
-          // ✅ STORE IT IN AIRTABLE
-          RecordId: "temp" // placeholder first
+          RecordId: "temp",
         },
       },
     ],
@@ -27,8 +26,8 @@ export const saveReview = async (data: any) => {
 
   const recordId = records[0].id;
 
-  // 🔥 update same record with its own ID
-  await base("tblYgE5qwQg4uZhLd").update([
+  // update record with its own ID
+  await base(TABLE_NAME).update([
     {
       id: recordId,
       fields: {
@@ -44,12 +43,14 @@ export const updateAirtableStatus = async (
   recordId: string,
   status: string
 ) => {
-  await base("tblYgE5qwQg4uZhLd").update(
+  if (!recordId) throw new Error("Missing recordId");
+
+  await base(TABLE_NAME).update(
     [
       {
         id: recordId,
         fields: {
-          Status: [status], // must be array
+          Status: [status], // Airtable multi-select format
         },
       },
     ],

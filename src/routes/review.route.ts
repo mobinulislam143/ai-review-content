@@ -3,7 +3,7 @@ import express from "express";
 import { reviewContent } from "../controllers/review.controller";
 import { validate } from "../middlewares/validate.middleware";
 import { reviewSchema } from "../validators/review.validator";
-import { handleSlackAction } from "../controllers/slack.controller";
+import handleSlackAction from "../controllers/slack.controller";
 
 const router = express.Router();
 
