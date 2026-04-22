@@ -20,8 +20,9 @@ console.log("Final Data to Save and Send:", finalData);
     await saveReview(finalData);
 
 
-    await sendSlackMessage(finalData);
+const recordId = await saveReview(finalData);
 
+await sendSlackMessage(finalData, recordId);
     return res.json({
       success: true,
       data: finalData,

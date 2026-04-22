@@ -7,17 +7,37 @@ const base = new Airtable({ apiKey: env.AIRTABLE_API_KEY }).base(
 );
 
 export const saveReview = async (data: any) => {
-  return base("tblYgE5qwQg4uZhLd").create([
-    {
-      fields: {
-        Name: data.name,
-        Platform: data.platform, 
-        Status: ["Pending"], // Must be an array for Multiple Select
-        Score: Number(data.score), // Ensure this is a number, not a string
-        Feedback: data.improved,
+  const records = await base("tblYgE5qwQg4uZhLd").create(
+    [
+      {
+        fields: {
+          Name: data.name,
+          Platform: data.platform,
+          Status: ["Pending"],
+          Score: Number(data.score),
+          Feedback: data.improved,
+        },
       },
-    },
-  ],
-{ typecast: true }
-);
+    ],
+    { typecast: true }
+  );
+
+  return records[0].id; // 🔥 REQUIRED
+};
+
+export const updateAirtableStatus = async (
+  recordId: string,
+  status: string
+) => {
+  await base("tblYgE5qwQg4uZhLd").update(
+    [
+      {
+        id: recordId,
+        fields: {
+          Status: [status], // must be array
+        },
+      },
+    ],
+    { typecast: true }
+  );
 };
